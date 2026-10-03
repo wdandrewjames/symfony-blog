@@ -1,0 +1,41 @@
+name: quality checks
+
+on:
+  pull-request:
+    branches: 
+      - main
+      - development
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+
+  steps:
+    - name: Checkout
+      uses: actions/Checkout@v7
+      with:
+        fetch-depth: 0
+
+    - name: Setup PHP 8.5
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.5'
+        extensions: pdo, pdo_pgsql, intl, bcmath, mbstring, redis, gd, zip
+        tools: composer:v2
+        coverage: pcov
+
+    - name: Cache Composer packages
+      uses: actions/cache@v4
+      with:
+        path: vendor
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Install Composer dependencies
+      run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+
+    - name: check Formatting
+      run: vendor/bin/php-cs-fixer fix --dry-run --diff
+
+    - name: Check Static Analysis
+      run: vendor/bin/phpstan analyse

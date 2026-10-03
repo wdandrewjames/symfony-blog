@@ -1,0 +1,29 @@
+FROM php:8.5-fpm
+WORKDIR /app
+RUN apt-get update \
+    && apt-get install -y \
+        libzip-dev \
+        libpq-dev \
+        libxml2-dev \
+        libicu-dev \
+        libpng-dev \
+        libjpeg-dev \
+        libfreetype6-dev \
+        unzip \
+        $PHPIZE_DEPS \
+    && pecl install redis pcov \
+    && docker-php-ext-enable redis pcov \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
+        bcmath \
+        exif \
+        ftp \
+        gd \
+        intl \
+        pcntl \
+        pdo_pgsql \
+        soap \
+        zip \
+    && rm -rf /var/lib/apt/lists/*
+RUN printf 'memory_limit=512M\npcov.directory=/app/app\n' > /usr/local/etc/php/conf.d/zz-app.ini
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
