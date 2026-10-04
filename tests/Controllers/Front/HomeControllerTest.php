@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class HomeControllerTest extends WebTestCase
 {
-    public function test_home_page_loads_successfully(): void
-    { 
+    public function testHomePageLoadsSuccessfully(): void
+    {
         $client = static::createClient();
 
         $url = self::getContainer()
