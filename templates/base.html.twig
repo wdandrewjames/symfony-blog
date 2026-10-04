@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <link rel="stylesheet" href="assets/css/main.css"/>
+        {% block stylesheets %}
+        {% endblock %}
+
+        {% block javascripts %}
+        {% endblock %}
+
+        {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
+        {% if frankenphp_hot_reload %}
+            <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
+            <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
+            <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
+        {% endif %}
+    </head>
+
+    <body class="is-preload">
+
+        <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+            <header id="header">
+                <h1><a href="index.html">Symfony Blog Project</a></h1>
+                <nav class="links">
+                    <ul>
+                        <li><a href="#">Posts</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Tips</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </nav>
+                <nav class="main">
+                    <ul>
+                        <li class="search">
+                            <a class="fa-search" href="#search">Search</a>
+                            <form id="search" method="get" action="#">
+                                <input type="text" name="query" placeholder="Search"/>
+                            </form>
+                        </li>
+                        <li class="menu">
+                            <a class="fa-bars" href="#menu">Menu</a>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+
+            <!-- Menu -->
+            <section id="menu">
+
+                <!-- Search -->
+                <section>
+                    <form class="search" method="get" action="#">
+                        <input type="text" name="query" placeholder="Search"/>
+                    </form>
+                </section>
+
+                <!-- Links -->
+                <section>
+                    <ul class="links">
+                        <li>
+                            <a href="#">
+                                <h3>Lorem ipsum</h3>
+                                <p>Feugiat tempus veroeros dolor</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>Dolor sit amet</h3>
+                                <p>Sed vitae justo condimentum</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>Feugiat veroeros</h3>
+                                <p>Phasellus sed ultricies mi congue</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>Etiam sed consequat</h3>
+                                <p>Porta lectus amet ultricies</p>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Actions -->
+                <section>
+                    <ul class="actions stacked">
+                        <li><a href="#" class="button large fit">Log In</a></li>
+                    </ul>
+                </section>
+
+            </section>
+
+            <!-- Main -->
+            <div id="main">
+                {% block content %}
+                            
+                {% endblock %}
+            </div>
+
+            <!-- Sidebar -->
+            <section id="sidebar">
+
+                <!-- Intro -->
+                <section id="intro">
+                    <a href="#" class="logo"><img src="assets/images/logo.jpg" alt=""/></a>
+                    <header>
+                        <h2>Symfony Blog Project</h2>
+                        <p>A project to learn Symfony PHP Framework</a></p>
+                    </header>
+                </section>
+
+                <!-- Mini Posts -->
+                <section>
+                    <div class="mini-posts">
+                        <twig:MiniPost/>
+                        <twig:MiniPost/>
+                        <twig:MiniPost/>
+                        <twig:MiniPost/>
+                    </div>
+                </section>
+
+                <!-- Posts List -->
+                <section>
+                    <ul class="posts">
+                        <twig:RecentArticle/>
+                        <twig:RecentArticle/>
+                        <twig:RecentArticle/>
+                        <twig:RecentArticle/>
+                        <twig:RecentArticle/>
+                    </ul>
+                </section>
+
+                <!-- About -->
+                <twig:Blurb/>
+
+                <!-- Footer -->
+                <twig:Footer/>
+            </section>
+
+        </div>
+
+        <!-- Scripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/browser.min.js"></script>
+        <script src="assets/js/breakpoints.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <script src="assets/js/main.js"></script>
+    </body>
+</html>

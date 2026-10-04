@@ -25,5 +25,5 @@ RUN apt-get update \
         soap \
         zip \
     && rm -rf /var/lib/apt/lists/*
-RUN printf 'memory_limit=512M\npcov.directory=/app/app\n' > /usr/local/etc/php/conf.d/zz-app.ini
+RUN printf 'memory_limit=512M\npcov.directory=/app/src\n' > /usr/local/etc/php/conf.d/zz-app.ini
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
