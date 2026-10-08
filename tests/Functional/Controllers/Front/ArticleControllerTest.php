@@ -6,7 +6,7 @@ use App\Entity\Article;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class PostControllerTest extends WebTestCase
+class ArticleControllerTest extends WebTestCase
 {
     public function testHomePageLoadsSuccessfully(): void
     {
@@ -27,7 +27,7 @@ class PostControllerTest extends WebTestCase
 
         $url = self::getContainer()
             ->get('router')
-            ->generate('front.posts.show', [
+            ->generate('front.articles.show', [
                 'slug' => 'my-first-article',
             ]);
 
