@@ -13,7 +13,7 @@ class RecentArticlesController extends AbstractController
         $recentArticles = $articleRepository->findLatestPublished(3);
 
         return $this->render('fragments/_recent_articles.html.twig', [
-            'recent_articles' => $recentArticles
+            'recent_articles' => $recentArticles,
         ]);
     }
 }

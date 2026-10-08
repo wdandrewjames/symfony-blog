@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Article;
-use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -18,7 +17,7 @@ class AppFixtures extends Fixture
             content: 'Article content goes here...',
         );
 
-        $article->setPublishedAt(new DateTimeImmutable());
+        $article->setPublishedAt(new \DateTimeImmutable());
 
         $manager->persist($article);
 

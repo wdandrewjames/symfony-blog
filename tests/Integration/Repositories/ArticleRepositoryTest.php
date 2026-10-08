@@ -4,7 +4,6 @@ namespace App\Tests\Integration\Repositories;
 
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -28,7 +27,7 @@ final class ArticleRepositoryTest extends KernelTestCase
         );
 
         $articleOne->setPublishedAt(
-            new DateTimeImmutable('2026-10-01')
+            new \DateTimeImmutable('2026-10-01')
         );
 
         $articleTwo = new Article(
@@ -39,7 +38,7 @@ final class ArticleRepositoryTest extends KernelTestCase
         );
 
         $articleTwo->setPublishedAt(
-            new DateTimeImmutable('2026-10-02')
+            new \DateTimeImmutable('2026-10-02')
         );
 
         $articleThree = new Article(
@@ -50,7 +49,7 @@ final class ArticleRepositoryTest extends KernelTestCase
         );
 
         $articleThree->setPublishedAt(
-            new DateTimeImmutable('2026-10-03')
+            new \DateTimeImmutable('2026-10-03')
         );
 
         $articleFour = new Article(
@@ -61,7 +60,7 @@ final class ArticleRepositoryTest extends KernelTestCase
         );
 
         $articleFour->setPublishedAt(
-            new DateTimeImmutable('2026-10-04')
+            new \DateTimeImmutable('2026-10-04')
         );
 
         $entityManager->persist($articleOne);
