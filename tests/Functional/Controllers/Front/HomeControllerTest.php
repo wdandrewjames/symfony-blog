@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\Controllers\Front;
+namespace App\Tests\Functional\Controllers\Front;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class PostControllerTest extends WebTestCase
+class HomeControllerTest extends WebTestCase
 {
     public function testHomePageLoadsSuccessfully(): void
     {
@@ -12,9 +12,9 @@ class PostControllerTest extends WebTestCase
 
         $url = self::getContainer()
             ->get('router')
-            ->generate('front.posts.show');
+            ->generate('home');
 
-        $client->request('GET', '/post');
+        $client->request('GET', $url);
 
         self::assertResponseIsSuccessful();
     }
