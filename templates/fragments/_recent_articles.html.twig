@@ -1,0 +1,7 @@
+{% for recent_article in recent_articles %}
+    <twig:RecentArticle 
+        title="{{ recent_article.title }}" 
+        url="{{ path('front.articles.show', { slug: recent_article.slug }) }}" 
+        publishedAt="{{ recent_article.publishedAt|date('M d, Y') }}"
+    />
+{% endfor %}

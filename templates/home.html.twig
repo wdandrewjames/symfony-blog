@@ -1,31 +1,19 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
 {% block content %}
 
-    <!-- Post -->
-    <twig:PostListing
-        title="Getting Started with Symfony"
-        subtitle="Building modern PHP applications with Symfony"
-        excerpt="A practical introduction to Symfony and the core concepts behind building maintainable, well-structured PHP applications."
-        url="/post/getting-started-with-symfony"
-        publishedAt="2026-10-03"
-        author="Andrew Rushton" 
-    />
-    <twig:PostListing
-        title="Getting Started with Symfony"
-        subtitle="Building modern PHP applications with Symfony"
-        excerpt="A practical introduction to Symfony and the core concepts behind building maintainable, well-structured PHP applications."
-        url="/post/getting-started-with-symfony"
-        publishedAt="2026-10-03"
-        author="Andrew Rushton" 
-    />
-    <twig:PostListing
-        title="Getting Started with Symfony"
-        subtitle="Building modern PHP applications with Symfony"
-        excerpt="A practical introduction to Symfony and the core concepts behind building maintainable, well-structured PHP applications."
-        url="/post/getting-started-with-symfony"
-        publishedAt="2026-10-03"
-        author="Andrew Rushton" 
-    />
+    <!-- Articles -->
+    {% for article in articles %}
+        <twig:ArticleListing
+            title="{{ article.title }}"
+            subtitle="{{ article.subtitle }}"
+            excerpt="{{ article.subtitle }}"
+            url="{{ path('front.articles.show', {slug: article.slug}) }}"
+            publishedAt="{{ article.publishedAt|date('M d, Y') }}"
+            author="Andrew Rushton" 
+        />
+    {% endfor %}
 
     <ul class="actions pagination">
         <li><a href="" class="disabled button large previous">Previous Page</a></li>
