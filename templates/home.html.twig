@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
+
+    <!-- Articles -->
+    {% for article in articles %}
+        <twig:ArticleListing
+            title="{{ article.title }}"
+            subtitle="{{ article.subtitle }}"
+            excerpt="{{ article.subtitle }}"
+            url="{{ path('front.articles.show', {slug: article.slug}) }}"
+            publishedAt="{{ article.publishedAt|date('M d, Y') }}"
+            author="Andrew Rushton" 
+        />
+    {% endfor %}
+
+    <ul class="actions pagination">
+        <li><a href="" class="disabled button large previous">Previous Page</a></li>
+        <li><a href="#" class="button large next">Next Page</a></li>
+    </ul>
+
+{% endblock %}

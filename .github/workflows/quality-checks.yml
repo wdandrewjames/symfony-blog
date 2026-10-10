@@ -1,41 +1,69 @@
-name: quality checks
+name: Quality Checks
 
 on:
-  pull-request:
-    branches: 
+  pull_request:
+    branches:
       - main
       - development
+
+permissions:
+  contents: read
 
 jobs:
   quality-checks:
     runs-on: ubuntu-latest
 
-  steps:
-    - name: Checkout
-      uses: actions/Checkout@v7
-      with:
-        fetch-depth: 0
+    env:
+      DATABASE_URL: "postgresql://app:password@127.0.0.1:5432/app?serverVersion=16&charset=utf8"
 
-    - name: Setup PHP 8.5
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.5'
-        extensions: pdo, pdo_pgsql, intl, bcmath, mbstring, redis, gd, zip
-        tools: composer:v2
-        coverage: pcov
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: app_test
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U app -d app_test"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
-    - name: Cache Composer packages
-      uses: actions/cache@v4
-      with:
-        path: vendor
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: ${{ runner.os }}-composer-
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
-    - name: Install Composer dependencies
-      run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+      - name: Setup PHP 8.5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: pdo, pdo_pgsql, intl, bcmath, mbstring, redis, gd, zip
+          tools: composer:v2
+          coverage: pcov
 
-    - name: check Formatting
-      run: vendor/bin/php-cs-fixer fix --dry-run --diff
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
-    - name: Check Static Analysis
-      run: vendor/bin/phpstan analyse
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+
+      - name: Check Formatting
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff
+
+      - name: Check Static Analysis
+        run: vendor/bin/phpstan analyse
+
+      - name: Run Database Migrations
+        run: php bin/console doctrine:migrations:migrate --env=test --no-interaction
+
+      - name: Automated Tests
+        run: php bin/phpunit
