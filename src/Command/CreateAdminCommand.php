@@ -4,9 +4,7 @@ namespace App\Command;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,8 +39,7 @@ class CreateAdminCommand extends Command
             return Command::FAILURE;
         }
 
-        $user = new User();
-        $user->setEmail($email);
+        $user = new User($email);
         $user->setRoles(['ROLE_ADMIN']);
         $user->setPassword(
             $this->passwordHasher->hashPassword($user, $password)

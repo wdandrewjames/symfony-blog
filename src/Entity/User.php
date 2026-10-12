@@ -21,7 +21,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Ulid $id = null;
 
     #[ORM\Column(length: 180)]
-    private ?string $email = null;
+    private string $email;
 
     /**
      * @var list<string> The user roles
@@ -35,18 +35,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    public function __construct(string $email)
+    {
+        if ('' === trim($email)) {
+            throw new \InvalidArgumentException('Email cannot be empty.');
+        }
+
+        $this->id = new Ulid();
+
+        $this->email = $email;
+    }
+
     public function getId(): ?Ulid
     {
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
 
     public function setEmail(string $email): static
     {
+        if ('' === trim($email)) {
+            throw new \InvalidArgumentException('Email cannot be empty.');
+        }
+
         $this->email = $email;
 
         return $this;
@@ -59,7 +74,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        if ('' === trim($this->email)) {
+            throw new \InvalidArgumentException('Email cannot be empty.');
+        }
+
+        return $this->email;
     }
 
     /**
@@ -105,8 +124,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __serialize(): array
     {
         $data = (array) $this;
-        $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
-        
+        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
+
         return $data;
     }
 }
