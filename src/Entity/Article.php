@@ -29,17 +29,9 @@ class Article
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $publishedAt = null;
 
-    public function __construct(
-        string $title,
-        string $subtitle,
-        string $slug,
-        string $content,
-    ) {
+    public function __construct()
+    {
         $this->id = new Ulid();
-        $this->title = $title;
-        $this->slug = $slug;
-        $this->subtitle = $subtitle;
-        $this->content = $content;
     }
 
     public function getId(): Ulid

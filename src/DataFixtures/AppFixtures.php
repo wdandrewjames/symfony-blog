@@ -10,13 +10,12 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $article = new Article(
-            title: 'Getting Started with Symfony',
-            subtitle: 'My first steps with Doctrine',
-            slug: 'getting-started-with-symfony',
-            content: 'Article content goes here...',
-        );
+        $article = new Article();
 
+        $article->setTitle('Getting Started with Symfony');
+        $article->setSubtitle('My first steps with Doctrine');
+        $article->setSlug('getting-started-with-symfony');
+        $article->setContent('Article content goes here...');
         $article->setPublishedAt(new \DateTimeImmutable());
 
         $manager->persist($article);
