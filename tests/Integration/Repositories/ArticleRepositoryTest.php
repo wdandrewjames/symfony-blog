@@ -19,45 +19,45 @@ final class ArticleRepositoryTest extends KernelTestCase
         $repository = self::getContainer()
             ->get(ArticleRepository::class);
 
-        $articleOne = new Article(
-            title: 'Article One',
-            subtitle: 'First article',
-            slug: 'article-one',
-            content: 'Article one content',
-        );
+        $articleOne = new Article();
+
+        $articleOne->setTitle('Article One');
+        $articleOne->setSubtitle('First article');
+        $articleOne->setSlug('article-one');
+        $articleOne->setContent('Article one content');
 
         $articleOne->setPublishedAt(
             new \DateTimeImmutable('2026-10-01')
         );
 
-        $articleTwo = new Article(
-            title: 'Article Two',
-            subtitle: 'Second article',
-            slug: 'article-two',
-            content: 'Article two content',
-        );
+        $articleTwo = new Article();
+
+        $articleTwo->setTitle('Article Two');
+        $articleTwo->setSubtitle('Second article');
+        $articleTwo->setSlug('article-two');
+        $articleTwo->setContent('Article two content');
 
         $articleTwo->setPublishedAt(
             new \DateTimeImmutable('2026-10-02')
         );
 
-        $articleThree = new Article(
-            title: 'Article Three',
-            subtitle: 'Third article',
-            slug: 'article-three',
-            content: 'Article three content',
-        );
+        $articleThree = new Article();
+
+        $articleThree->setTitle('Article Three');
+        $articleThree->setSubtitle('Second article');
+        $articleThree->setSlug('article-three');
+        $articleThree->setContent('Article three content');
 
         $articleThree->setPublishedAt(
             new \DateTimeImmutable('2026-10-03')
         );
 
-        $articleFour = new Article(
-            title: 'Article Four',
-            subtitle: 'forth article',
-            slug: 'article-four',
-            content: 'Article four content',
-        );
+        $articleFour = new Article();
+
+        $articleFour->setTitle('Article Four');
+        $articleFour->setSubtitle('Second article');
+        $articleFour->setSlug('article-four');
+        $articleFour->setContent('Article four content');
 
         $articleFour->setPublishedAt(
             new \DateTimeImmutable('2026-10-04')
