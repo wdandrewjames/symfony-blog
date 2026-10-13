@@ -15,12 +15,12 @@ class ArticleControllerTest extends WebTestCase
         $entityManager = self::getContainer()
             ->get(EntityManagerInterface::class);
 
-        $article = new Article(
-            title: 'My First Article',
-            subtitle: 'Test subtitle',
-            slug: 'my-first-article',
-            content: 'Test content',
-        );
+        $article = new Article();
+
+        $article->setTitle('My First Article');
+        $article->setSubtitle('Test subtitle');
+        $article->setSlug('my-first-article');
+        $article->setContent('Test content');
 
         $entityManager->persist($article);
         $entityManager->flush();
