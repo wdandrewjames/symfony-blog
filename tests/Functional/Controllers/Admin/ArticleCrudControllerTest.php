@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\Controllers\Admin;
 
 use App\Controller\Admin\ArticleCrudController;
+use App\Controller\Admin\DashboardController;
 use App\Entity\Article;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,7 +27,8 @@ class ArticleCrudControllerTest extends WebTestCase
         $this->client = static::createClient();
 
         $this->adminUrlGenerator = static::getContainer()
-            ->get(AdminUrlGenerator::class);
+            ->get(AdminUrlGenerator::class)
+            ->setDashboard(DashboardController::class);
 
         $this->entityManager = static::getContainer()
             ->get(EntityManagerInterface::class);
