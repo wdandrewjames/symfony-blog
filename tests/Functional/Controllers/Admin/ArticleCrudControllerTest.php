@@ -30,19 +30,45 @@ class ArticleCrudControllerTest extends WebTestCase
 
         $this->entityManager = static::getContainer()
             ->get(EntityManagerInterface::class);
+    }
 
-        $user = new User('admin@example.com');
-        $user->setRoles(['ROLE_ADMIN']);
+    public function testUnauthenticatedUserCannotAccessArticleAdmin(): void
+    {
+        $url = $this->adminUrlGenerator
+            ->setController(ArticleCrudController::class)
+            ->setAction(Action::INDEX)
+            ->generateUrl();
+
+        $this->client->request('GET', $url);
+
+        self::assertResponseRedirects('/login');
+    }
+
+    public function testNonAdminCannotAccessArticleAdmin(): void
+    {
+        $user = new User('regular@example.com');
+        $user->setRoles(['ROLE_USER']);
         $user->setPassword('unused-for-test');
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
         $this->client->loginUser($user);
+
+        $url = $this->adminUrlGenerator
+            ->setController(ArticleCrudController::class)
+            ->setAction(Action::INDEX)
+            ->generateUrl();
+
+        $this->client->request('GET', $url);
+
+        self::assertResponseStatusCodeSame(403);
     }
 
     public function testIndexPageLoadsSuccessfully(): void
     {
+        $this->loginAsAdmin();
+
         $url = $this->adminUrlGenerator
             ->unsetAll()
             ->setController(ArticleCrudController::class)
@@ -56,6 +82,8 @@ class ArticleCrudControllerTest extends WebTestCase
 
     public function testCreatePageLoadsSuccessfully(): void
     {
+        $this->loginAsAdmin();
+
         $url = $this->adminUrlGenerator
             ->setController(ArticleCrudController::class)
             ->setAction(Action::NEW)
@@ -68,6 +96,8 @@ class ArticleCrudControllerTest extends WebTestCase
 
     public function testEditPageLoadsSuccessfully(): void
     {
+        $this->loginAsAdmin();
+
         $article = new Article();
 
         $article->setTitle('My First Article');
@@ -91,6 +121,8 @@ class ArticleCrudControllerTest extends WebTestCase
 
     public function testCanCreateNewArticle(): void
     {
+        $this->loginAsAdmin();
+
         $url = $this->adminUrlGenerator
             ->setController(ArticleCrudController::class)
             ->setAction(Action::NEW)
@@ -118,6 +150,8 @@ class ArticleCrudControllerTest extends WebTestCase
 
     public function testCanUpdateArticle(): void
     {
+        $this->loginAsAdmin();
+
         $article = new Article();
 
         $article->setTitle('My First Article');
@@ -148,7 +182,7 @@ class ArticleCrudControllerTest extends WebTestCase
         $updatedArticle = $this->entityManager
             ->getRepository(Article::class)
             ->find($article->getId());
-        
+
         self::assertResponseRedirects();
         self::assertNotNull($article);
         self::assertSame('My First Article Updated', $updatedArticle->getTitle());
@@ -156,6 +190,8 @@ class ArticleCrudControllerTest extends WebTestCase
 
     public function testCanDeleteArticle(): void
     {
+        $this->loginAsAdmin();
+
         $article = new Article();
         $article->setTitle('Article to Delete');
         $article->setSubtitle('Test subtitle');
@@ -199,5 +235,17 @@ class ArticleCrudControllerTest extends WebTestCase
         self::assertResponseRedirects();
 
         self::assertNull($deletedArticle);
+    }
+
+    private function loginAsAdmin(): void
+    {
+        $user = new User('admin@example.com');
+        $user->setRoles(['ROLE_ADMIN']);
+        $user->setPassword('unused-for-test');
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        $this->client->loginUser($user);
     }
 }
